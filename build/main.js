@@ -235,6 +235,27 @@ class Webuntis extends utils.Adapter {
                     this.log.info('Cannot read Inbox - possible block by scool');
                     this.log.debug(error);
                 });
+
+                this.log.debug('getHomeWorksFor');
+                untis.getHomeWorksFor(new Date(new Date().setDate(new Date().getDate()-1)), new Date()).then( (homework) => {
+                    this.log.debug('Get getHomeWorksFor from API');
+                    this.log.debug(JSON.stringify(homework));
+                    
+                }).catch(async error => {
+                    this.log.info('Cannot read getHomeWorksFor - possible block by scool');
+                    this.log.debug(error);
+                });
+
+                this.log.debug('getHomeWorkAndLessons');
+                untis.getHomeWorkAndLessons(new Date(new Date().setDate(new Date().getDate()-1)), new Date()).then( (homework) => {
+                    this.log.debug('Get getHomeWorkAndLessons from API');
+                    this.log.debug(JSON.stringify(homework));
+                    
+                }).catch(async error => {
+                    this.log.info('Cannot read getHomeWorkAndLessons - possible block by scool');
+                    this.log.debug(error);
+                });
+                
             }).catch(async (error) => {
                 this.log.error(error);
                 this.log.error('Login WebUntis failed');
