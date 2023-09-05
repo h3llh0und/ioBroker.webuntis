@@ -230,6 +230,7 @@ class Webuntis extends utils.Adapter {
                     this.log.debug(error);
                 });
 
+                this.log.debug('getHomeWorksFor');
                 untis.getHomeWorksFor(new Date(new Date().setDate(new Date().getDate()-1)), new Date()).then( (homework) => {
                     this.log.debug('Get getHomeWorksFor from API');
                     this.log.debug(JSON.stringify(homework));
@@ -239,6 +240,7 @@ class Webuntis extends utils.Adapter {
                     this.log.debug(error);
                 });
 
+                this.log.debug('getHomeWorkAndLessons');
                 untis.getHomeWorkAndLessons(new Date(new Date().setDate(new Date().getDate()-1)), new Date()).then( (homework) => {
                     this.log.debug('Get getHomeWorkAndLessons from API');
                     this.log.debug(JSON.stringify(homework));
