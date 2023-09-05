@@ -238,21 +238,11 @@ class Webuntis extends utils.Adapter {
 
                 this.log.debug('getHomeWorksFor');
                 untis.getHomeWorksFor(new Date(new Date().setDate(new Date().getDate()-1)), new Date()).then( (homework) => {
-                    this.log.debug('Get getHomeWorksFor from API');
+                    this.log.debug('Get Homework from API');
                     this.log.debug(JSON.stringify(homework));
-                    
+                    this.setHomework(homework);
                 }).catch(async error => {
                     this.log.info('Cannot read getHomeWorksFor - possible block by scool');
-                    this.log.debug(error);
-                });
-
-                this.log.debug('getHomeWorkAndLessons');
-                untis.getHomeWorkAndLessons(new Date(new Date().setDate(new Date().getDate()-1)), new Date()).then( (homework) => {
-                    this.log.debug('Get getHomeWorkAndLessons from API');
-                    this.log.debug(JSON.stringify(homework));
-                    
-                }).catch(async error => {
-                    this.log.info('Cannot read getHomeWorkAndLessons - possible block by scool');
                     this.log.debug(error);
                 });
                 
@@ -264,6 +254,71 @@ class Webuntis extends utils.Adapter {
         }
         // Next round in one Hour
         this.startHourSchedule();
+    }
+
+    async setHomework(homeworks) {       
+        let index = 0;
+        for (const homework of homeworks.homeworks) {
+            await this.setObjectNotExistsAsync('homework.' + index + '.text', {
+                type: 'state',
+                common: {
+                    name: 'text',
+                    role: 'value',
+                    type: 'string',
+                    write: false,
+                    read: true,
+                },
+                native: {},
+            }).catch((error) => {
+                this.log.error(error);
+            });
+            await this.setStateAsync('homework.' + index + '.text', homework.text, true);
+            await this.setObjectNotExistsAsync('homework.' + index + '.date', {
+                type: 'state',
+                common: {
+                    name: 'date',
+                    role: 'value',
+                    type: 'string',
+                    write: false,
+                    read: true,
+                },
+                native: {},
+            }).catch((error) => {
+                this.log.error(error);
+            });
+            await this.setStateAsync('homework.' + index + '.date', homework.date, true);
+            await this.setObjectNotExistsAsync('homework.' + index + '.dueDate', {
+                type: 'state',
+                common: {
+                    name: 'dueDate',
+                    role: 'value',
+                    type: 'string',
+                    write: false,
+                    read: true,
+                },
+                native: {},
+            }).catch((error) => {
+                this.log.error(error);
+            });
+            await this.setStateAsync('homework.' + index + '.dueDate', homework.dueDate, true);
+            await this.setObjectNotExistsAsync('homework.' + index + '.lesson', {
+                type: 'state',
+                common: {
+                    name: 'lesson',
+                    role: 'value',
+                    type: 'string',
+                    write: false,
+                    read: true,
+                },
+                native: {},
+            }).catch((error) => {
+                this.log.error(error);
+            });
+            await this.setStateAsync('homework.' + index + '.lesson', homework.lessons.find(lesson => lesson.id === homework.lessonId).subject, true);
+            //Count Element
+            index = index + 1;
+        }
+        this.deleteOldHomeworkObject(index);
     }
     //FUnktion for Inbox Data
     async setInbox(messages) {
@@ -585,6 +640,15 @@ class Webuntis extends utils.Adapter {
             await this.delObjectAsync(dayindex + '.' + index.toString(), { recursive: true });
             // Have one delted, next round
             await this.deleteOldTimetableObject(dayindex, index + 1);
+        }
+    }
+    async deleteOldHomeworkObject(index) {
+        const delObject = await this.getObjectAsync('homework.' + index + '.text');
+        if (delObject) {
+            this.log.debug('Object zum löschen gefunden - ' + index.toString());
+            await this.delObjectAsync('homework.' + index, { recursive: true });
+            // Have one delted, next round
+            await this.deleteOldHomeworkObject(index + 1);
         }
     }
     getNextWorkDay(date) {
