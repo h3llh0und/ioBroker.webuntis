@@ -231,20 +231,20 @@ class Webuntis extends utils.Adapter {
                 });
 
                 untis.getHomeWorksFor(new Date(new Date().setDate(new Date().getDate()-1)), new Date()).then( (homework) => {
-                    this.log.debug('Get inbox from API');
+                    this.log.debug('Get getHomeWorksFor from API');
                     this.log.debug(JSON.stringify(homework));
                     
                 }).catch(async error => {
-                    this.log.info('Cannot read Inbox - possible block by scool');
+                    this.log.info('Cannot read getHomeWorksFor - possible block by scool');
                     this.log.debug(error);
                 });
 
                 untis.getHomeWorkAndLessons(new Date(new Date().setDate(new Date().getDate()-1)), new Date()).then( (homework) => {
-                    this.log.debug('Get inbox from API');
+                    this.log.debug('Get getHomeWorkAndLessons from API');
                     this.log.debug(JSON.stringify(homework));
                     
                 }).catch(async error => {
-                    this.log.info('Cannot read Inbox - possible block by scool');
+                    this.log.info('Cannot read getHomeWorkAndLessons - possible block by scool');
                     this.log.debug(error);
                 });
 
