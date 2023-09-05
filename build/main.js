@@ -256,9 +256,9 @@ class Webuntis extends utils.Adapter {
         this.startHourSchedule();
     }
 
-    async setHomework(homeworks) {       
+    async setHomework(homeworkResult) {       
         let index = 0;
-        for (const homework of homeworks.homeworks) {
+        for (const homework of homeworkResult.homeworks) {
             await this.setObjectNotExistsAsync('homework.' + index + '.text', {
                 type: 'state',
                 common: {
@@ -314,7 +314,7 @@ class Webuntis extends utils.Adapter {
             }).catch((error) => {
                 this.log.error(error);
             });
-            await this.setStateAsync('homework.' + index + '.lesson', homework.lessons.find(lesson => lesson.id === homework.lessonId).subject, true);
+            await this.setStateAsync('homework.' + index + '.lesson', homeworkResult.lessons.find(lesson => lesson.id === homework.lessonId).subject, true);
             //Count Element
             index = index + 1;
         }
