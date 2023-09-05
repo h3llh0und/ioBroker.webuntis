@@ -237,7 +237,7 @@ class Webuntis extends utils.Adapter {
                 });
 
                 this.log.debug('getHomeWorksFor');
-                untis.getHomeWorksFor(new Date(new Date().setDate(new Date().getDate()-1)), new Date()).then( (homework) => {
+                untis.getHomeWorksFor(new Date(new Date().setDate(new Date().getDate()-1)), new Date(new Date().setDate(new Date().getDate()+1))).then( (homework) => {
                     this.log.debug('Get Homework from API');
                     this.log.debug(JSON.stringify(homework));
                     this.setHomework(homework);
