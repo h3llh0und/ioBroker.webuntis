@@ -220,9 +220,9 @@ class Webuntis extends utils.Adapter {
                     this.log.info('Cannot read Message Center - possible block by scool');
                     this.log.debug(error);
                 });
-
+                this.log.debug('getInbox');
                 untis.getInbox().then( (messages) => {
-                    this.log.debug('Get inbox from API');
+                    this.log.debug('Get inbox from API Test');
                     this.log.debug(JSON.stringify(messages));
                     this.setInbox(messages);
                 }).catch(async error => {
